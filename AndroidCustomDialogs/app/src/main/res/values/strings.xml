@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">AndroidCustomDialogs</string>
+
+    <string name="app_name">Custom Dialogs</string>
+
+    <string name="content_description_base_dialog_icon">Imagem do Diálogo</string>
+
+    <!--Success Dialog-->
+    <string name="success_title">Oh Yeah!!</string>
+    <string name="success_message">Whatever you did, it was a huge success =D.</string>
+    <string name="success_button_text">OK, Cool</string>
+
+    <!--Error Dialog-->
+    <string name="error_title">Oh snap :/</string>
+    <string name="error_message">Something went terribly wrong\n(probably my fault)</string>
+    <string name="error_button_text">OK, no problem</string>
+
+    <!--Yes or No Dialog-->
+    <string name="choice_title">Hard decision</string>
+    <string name="choice_message">You have to take a decision, what is it going to be? Yes or No?</string>
+    <string name="choice_negative_button_text">No!</string>
+    <string name="choice_positive_button_text">Yeap!</string>
+    <string name="act_main_title">Android: Creating Custom Dialogs</string>
+    <string name="act_main_message">This is an example of how to create your own dialogs, using a custom style and custom actions.</string>
+    <string name="act_main_success_button_text">Success Dialog</string>
+    <string name="act_main_error_button_text">Error Dialog</string>
+    <string name="act_main_yesno_button_text">Yes/No Dialog</string>
+
 </resources>
