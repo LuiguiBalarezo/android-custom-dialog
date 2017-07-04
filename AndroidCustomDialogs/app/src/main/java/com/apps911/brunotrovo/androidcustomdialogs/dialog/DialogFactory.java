@@ -1,7 +1,6 @@
 package com.apps911.brunotrovo.androidcustomdialogs.dialog;
 
 import android.content.Context;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
@@ -13,11 +12,9 @@ import com.apps911.brunotrovo.androidcustomdialogs.R;
 
 public class DialogFactory {
 
-    private DialogFactory() {
-    }
+    private DialogFactory() { }
 
-
-    private static BaseDialog makeSuccessDialog(String title,
+    private static OneButtonDialog makeSuccessDialog(String title,
                                                      String message,
                                                      String buttonText) {
 
@@ -29,7 +26,7 @@ public class DialogFactory {
 
     }
 
-    public static BaseDialog makeSuccessDialog(@NonNull Context context,
+    public static OneButtonDialog makeSuccessDialog(@NonNull Context context,
                                                     @StringRes int titleId,
                                                     @StringRes int messageId,
                                                     @StringRes int buttonTextId) {
@@ -41,9 +38,9 @@ public class DialogFactory {
     }
 
 
-    private static BaseDialog makeErrorDialog(String title,
-                                              String message,
-                                              String buttonText) {
+    private static OneButtonDialog makeErrorDialog(String title,
+                                                   String message,
+                                                   String buttonText) {
 
         return OneButtonDialog.newInstance(title,
                 message,
@@ -53,44 +50,14 @@ public class DialogFactory {
 
     }
 
-    public static BaseDialog makeErrorDialog(@NonNull Context context,
-                                             @StringRes int titleId,
-                                             @StringRes int messageId,
-                                             @StringRes int buttonTextId) {
+    public static OneButtonDialog makeErrorDialog(@NonNull Context context,
+                                                  @StringRes int titleId,
+                                                  @StringRes int messageId,
+                                                  @StringRes int buttonTextId) {
 
         return makeErrorDialog(context.getResources().getString(titleId),
                 context.getString(messageId),
                 context.getString(buttonTextId));
-
-    }
-
-    public static BaseDialog makeConfirmationDialog(String title,
-                                                    String message,
-                                                    String positiveButtonText,
-                                                    String negativeButtonText,
-                                                    TwoButtonsDialog.OnTwoButtonsDialogAction onTwoButtonsDialogAction) {
-
-        return TwoButtonsDialog.newInstance(title,
-                message,
-                R.drawable.ic_question,
-                positiveButtonText,
-                negativeButtonText,
-                onTwoButtonsDialogAction);
-
-    }
-
-    public static BaseDialog makeConfirmationDialog(@NonNull Context context,
-                                                    @StringRes int titleId,
-                                                    @StringRes int messageId,
-                                                    @StringRes int positiveButtonTextId,
-                                                    @StringRes int negativeButtonTextId,
-                                                    TwoButtonsDialog.OnTwoButtonsDialogAction onTwoButtonsDialogAction) {
-
-        return makeConfirmationDialog(context.getResources().getString(titleId),
-                context.getString(messageId),
-                context.getString(positiveButtonTextId),
-                context.getString(negativeButtonTextId),
-                onTwoButtonsDialogAction);
 
     }
 

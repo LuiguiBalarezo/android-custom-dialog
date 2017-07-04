@@ -48,13 +48,4 @@
         android:text="@string/act_main_error_button_text"
         android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/btn_yesno"
-        style="@style/MediumButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="@string/act_main_yesno_button_text"
-        android:textStyle="bold" />
-
 </LinearLayout>
