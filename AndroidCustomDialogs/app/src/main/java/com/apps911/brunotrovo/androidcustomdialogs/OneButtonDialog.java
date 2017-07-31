@@ -1,4 +1,4 @@
-package com.apps911.brunotrovo.androidcustomdialogs.dialog;
+package com.apps911.brunotrovo.androidcustomdialogs;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.view.Display;
 import android.view.Gravity;
@@ -18,8 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.apps911.brunotrovo.androidcustomdialogs.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +40,8 @@ public class OneButtonDialog extends DialogFragment {
 
     private static final double DIALOG_WINDOW_WIDTH = 0.85;
 
+    private ButtonDialogAction buttonDialogAction;
+
     @BindView(R.id.dlg_one_button_iv_icon)
     ImageView ivDialogIcon;
 
@@ -50,27 +51,26 @@ public class OneButtonDialog extends DialogFragment {
     @BindView(R.id.dlg_one_button_tv_message)
     TextView tvMessage;
 
-    @BindView(R.id.dlg_one_button_btn_neutral)
+    @BindView(R.id.dlg_one_button_btn_ok)
     Button btnNeutral;
 
     private int getContentView() {
         return R.layout.dialog_one_button;
     }
 
-    private boolean getCanceledOnTouchOutside() {
-        return true;
-    }
-
-    public static OneButtonDialog newInstance(String title,
-                                              String message,
-                                              String buttonText,
+    public static OneButtonDialog newInstance(@StringRes int titleRes,
+                                              @StringRes int messageRes,
+                                              @StringRes int buttonTextRes,
                                               @DrawableRes int imageResId,
-                                              @ColorRes int colorResId) {
+                                              @ColorRes int colorResId,
+                                              ButtonDialogAction buttonDialogAction) {
         OneButtonDialog oneButtonDialog = new OneButtonDialog();
+        oneButtonDialog.buttonDialogAction = buttonDialogAction;
+
         Bundle args = new Bundle();
-        args.putString(ARG_TITLE, title);
-        args.putString(ARG_MESSAGE, message);
-        args.putString(ARG_BUTTON_TEXT, buttonText);
+        args.putInt(ARG_TITLE, titleRes);
+        args.putInt(ARG_MESSAGE, messageRes);
+        args.putInt(ARG_BUTTON_TEXT, buttonTextRes);
         args.putInt(ARG_IMAGE_RESOURCE_ID, imageResId);
         args.putInt(ARG_COLOR_RESOURCE_ID, colorResId);
         oneButtonDialog.setArguments(args);
@@ -81,7 +81,6 @@ public class OneButtonDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         Window window = getDialog().getWindow();
         if (window != null) {
             window.requestFeature(Window.FEATURE_NO_TITLE);
@@ -90,26 +89,25 @@ public class OneButtonDialog extends DialogFragment {
         View view = inflater.inflate(getContentView(), container, false);
         ButterKnife.bind(this, view);
 
-        getDialog().setCanceledOnTouchOutside(getCanceledOnTouchOutside());
+        getDialog().setCanceledOnTouchOutside(false);
 
         return view;
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String title = getArguments().getString(ARG_TITLE, "");
-        String message = getArguments().getString(ARG_MESSAGE, "");
-        String buttonText = getArguments().getString(ARG_BUTTON_TEXT, "");
+        int titleRes = getArguments().getInt(ARG_TITLE);
+        int messageRes = getArguments().getInt(ARG_MESSAGE);
+        int buttonTextRes = getArguments().getInt(ARG_BUTTON_TEXT);
         int image = getArguments().getInt(ARG_IMAGE_RESOURCE_ID);
         int color = getArguments().getInt(ARG_COLOR_RESOURCE_ID);
 
-        tvTitle.setText(title);
+        tvTitle.setText(titleRes);
         tvTitle.setTextColor(getResources().getColor(color));
-        tvMessage.setText(message);
-        btnNeutral.setText(buttonText);
+        tvMessage.setText(messageRes);
+        btnNeutral.setText(buttonTextRes);
         ivDialogIcon.setImageResource(image);
     }
 
@@ -122,23 +120,22 @@ public class OneButtonDialog extends DialogFragment {
     private void setDialogWindowWidth(double width) {
         Window window = getDialog().getWindow();
         Point size = new Point();
-
         Display display;
         if (window != null) {
             display = window.getWindowManager().getDefaultDisplay();
             display.getSize(size);
-
             int maxWidth = size.x;
-
             window.setLayout((int) (maxWidth* width), WindowManager.LayoutParams.WRAP_CONTENT);
             window.setGravity(Gravity.CENTER);
         }
-
     }
 
-    @OnClick(R.id.dlg_one_button_btn_neutral)
-    public void onNeutralButtonClicked() {
+    @OnClick(R.id.dlg_one_button_btn_ok)
+    public void onButtonClicked() {
         closeDialog();
+        if(buttonDialogAction != null) {
+            buttonDialogAction.onButtonClicked();
+        }
     }
 
     public void closeDialog() {
@@ -153,6 +150,10 @@ public class OneButtonDialog extends DialogFragment {
                 getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(
                 getActivity().findViewById(android.R.id.content).getWindowToken(), 0);
+    }
+
+    public interface ButtonDialogAction {
+        void onButtonClicked();
     }
 
 }
